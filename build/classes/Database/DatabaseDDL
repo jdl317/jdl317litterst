@@ -1,0 +1,125 @@
+create table customer(
+custid numeric(10),
+addr_city varchar(40),
+addr_state varchar(2),
+addr_street varchar(40),
+primary key(custid));
+
+create table account(
+custid numeric(10),
+acctid numeric(10),
+primary_num varchar(10),
+plan_type varchar(10),
+primary key(acctid),
+foreign key(custid) references customer(custid) on delete cascade);
+
+create table personal_customer(
+custid numeric(10),
+last_name varchar(20),
+first_name varchar(20),
+primary key(custid),
+foreign key(custid) references customer(custid) on delete cascade);
+
+create table business_customer(
+custid numeric(10),
+company_name varchar(40),
+primary key(custid),
+foreign key(custid) references customer(custid) on delete cascade);
+
+create table store(
+storeid numeric(10),
+primary key(storeid));
+
+create table physical_store(
+storeid numeric(10),
+addr_street varchar(25),
+addr_city varchar(25),
+addr_state varchar(2),
+primary key(storeid),
+foreign key(storeid) references store(storeid) on delete cascade);
+
+create table special_store(
+storeid numeric(10),
+url varchar(35),
+primary key(storeid),
+foreign key(storeid) references store(storeid) on delete cascade);
+
+create table inventory(
+storeid numeric(10),
+itemid numeric(10),
+i_desc varchar(20),
+price numeric(10,2),
+quantity numeric(8),
+foreign key(storeid) references store(storeid) on delete cascade);
+
+create table usage(
+useid numeric(10),
+acctid numeric(10),
+foreign key(acctid) references account(acctid));
+
+create table call(
+useid numeric(10),
+source_phone varchar(10),
+dest_phone varchar(10),
+start_time timestamp(6),
+end_time timestamp(6),
+duration varchar(10),
+primary key(useid));
+
+create table text(
+useid numeric(10),
+source_phone varchar(10),
+dest_phone varchar(10),
+t_time timestamp(6),
+t_size numeric(8),
+primary key(useid));
+
+create table web(
+useid numeric(10),
+access_type varchar(10) check (access_type in ('upload','download')),
+web_bytes numeric(8),
+primary key(useid));
+
+create table sale(
+saleid numeric(10),
+custid numeric(10),
+totalcost numeric(8,2),
+foreign key(custid) references customer(custid));
+
+create table phone(
+phoneid numeric(10),
+p_mfg varchar(20),
+p_model varchar(20),
+p_meid varchar(10)
+primary key(phoneid));
+
+create table phone_number(
+acctid numeric(10),
+phone_num varchar(10),
+foreign key(acctid) references account(acctid) on delete cascade);
+
+create table billing_plan(
+acctid numeric(10),
+price numeric(8,2),
+timeframe varchar(10) check (timeframe in ('monthly','annual')),
+pay_method varchar(30) check (pay_method in ('minute rate','text rate','flat rate')),
+primary key(acctid),
+foreign key(acctid) references account(acctid) on delete cascade);
+
+drop table billing_plan
+drop table phone_number
+drop table phone
+drop table sale
+drop table web
+drop table text
+drop table call
+drop table usage
+drop table inventory
+drop table special_store
+drop table physical_store
+drop table store
+drop table business_customer
+drop table personal_customer
+drop table account
+drop table customer
+

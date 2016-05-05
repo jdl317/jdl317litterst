@@ -1,0 +1,105 @@
+Jeff Litterst
+jdl317
+CSE 241
+
+This is the README file for my JogWireless Database Project.  I hope you enjoy the program!
+
+INTERFACES
+Before you can view the interfaces, you must login with a correct username and password.  
+The username is jdl317, and you’ll be able to change the password as the administrator.  
+Once you’ve entered the correct information, the program brings you to a screen where you 
+may select an interface. My project includes 2 interfaces, one being interactive and the other 
+being stream-input.  The interfaces are called Purchase and Usage. I will now go into more 
+detail with the interfaces…
+
+
+PURCHASE
+This is the interactive interface.  Within Purchase, you may buy a number of cell phones, create 
+an account for JogWireless, edit an existing account, and restock store inventory.  Purchase 
+begins by showing the JogWireless store locations, as well as offering the use of our online service.  
+By selecting a store based on its storeID (right-most column), you are then able to choose the 
+operation you’d like to perform.  
+
+When purchasing a phone, once the store is selected, its inventory is printed to the screen for the 
+user to view.  The user is then able to select whichever phone they desire (again, using the ID column) 
+as well as the quantity of phones they’d like to purchase.  Once this is done, Purchase asks for a 
+unique ID, as well as the user’s name and address.  Once this information is correctly provided, the 
+database is updated and a receipt is printed to the screen.  
+
+When creating an account, the user must first choose the type of plan, being individual, family, or 
+business.  This determines the maximum allowable number of phones to be added to the account.  
+The user may then create their specialized account, with options such as monthly vs. annual payments 
+as well as paying by minute, byte, or a flat rate.  Once the user’s name and address is entered, 
+the database is updated.  
+
+When editing an account, the user must first enter an account ID that already exists in the database.  
+Once the ID is verified, the user may essentially edit every aspect of the account, and the database 
+will be updated accordingly.
+
+When choosing to restock a store, the user is asked to choose a store, as well as the specific phone 
+they’d like to restock.
+
+For all of these options, once the user has finished, they will be asked if they’d like to repeat the 
+process, either creating another account, restock more stores, etc.
+
+
+USAGE
+This is the stream-input interface.  Usage first asks for an output filename, which it then creates.  
+Next, it asks for an input file.  If the file can’t be found, the user is given more chances to enter 
+a valid file.  Usage is very strict with the input it will allow.  I have included a file called 
+“usage.txt” in the top-level directory, which has valid and invalid lines.  Usage will only allow 
+lines as follows:
+
+For calls: source phone, destination phone, start time, end time
+For text: source phone, destination phone, time, size
+For web: source phone, access type, size
+
+There must be a comma and a space separating each item in the line.  Also, the timestamp is extremely 
+specific.  If the start time or end time do not exactly follow the format:
+‘DD-MMM-YY HH.MM.SS.000000 AM/PM’
+The line will be sent to the specified output file, with an error message indicating the line and 
+briefly describing the issue.  Usage allows between 1 and 6 millisecond values for timestamps.
+
+If the line does not violate the specified format, the phone numbers are checked with those existing in
+the database. At least one phone number must be in the database, otherwise the line is irrelevant. 
+If a number is in the database, the information will be sent to the database, where the usage, 
+call, text, and web tables are updated.
+
+
+DATA GENERATION
+All data generation is the result of my creativity, or lack thereof.  With that in mind, states often 
+don’t match up with cities, and many places are entirely fictional.  Also, due to this, my database 
+size is fairly small.  However, I certainly believe it to be sufficient for testing purposes.  All 
+tuples are included in the Database directory of the project.  This is so that I could easily add or 
+remove tuples from my database whenever it felt necessary.
+
+
+PL/SQL AND JAVA
+All SQL tables, triggers, and sequences are included in the Database directory of the project.  
+JogWireless is fairly Java centric, however I did try to include some PL/SQL code where I could.  
+As far as the code itself, I am the sole contributor.  Earlier in this semester, while working 
+on a POS System for CSE 216, one of my group members showed me an easy way to print the results 
+of a database.  Due to this, the specific method called “printResults()” is relatively generic.  
+Other than that, every loop, statement, and method is entirely of my own creation.  
+
+
+ERROR HANDLING
+I spent a lot of time testing and debugging my project, in order to make it as durable as possible 
+in terms of catching errors.  Though almost all my methods involved with SQL throw the SQLException, 
+this is just so that I can close the connection if an error should occur.  As you’ll see, I handle 
+all SQLExceptions and FileNotFoundExceptions.  Also, due to my testing, only correct values will be 
+accepted whenever input is required.  There are many, many while loops ensuring this, and as far as 
+I can tell the program is pretty air-tight in terms of only accepting input that makes sense.
+
+
+SUGGESTIONS/INTERESTING QUERIES
+In terms of creating a unique ID, I recommend any simple 5 digit sequence (i.e. 54321).  There are a 
+few exceptions, such as 12345, 12334, and others, simply due to my own testing.  Other than that, 
+creating a unique ID should be easy.  For editing an account, I recommend that you either create your 
+own account and then return to Purchase to edit it, or view the billing_plan for acctID 12334 and use 
+that ID for editing purposes.  
+
+For interesting queries, I recommend creating a family account with 5 numbers, and then editing that 
+account by trying to add more numbers.  Also, you can create an individual account and then try to edit 
+the number of phones in the account.  Another source of interest may be trying to overstock phones in 
+a store.

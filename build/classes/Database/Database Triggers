@@ -1,0 +1,42 @@
+create sequence useid;
+
+create or replace trigger updateid before insert on usage
+for each row
+begin
+select useid.nextval into :new.useid from dual;
+end;
+
+create or replace trigger update_callid after insert on usage
+for each row
+begin
+insert into call
+(useid)
+values
+(:new.useid);
+end;
+
+create or replace trigger update_textid after insert on usage
+for each row
+begin
+insert into text
+(useid)
+values
+(:new.useid);
+end;
+
+create or replace trigger update_webid after insert on usage
+for each row
+begin
+insert into web
+(useid)
+values
+(:new.useid);
+end;
+
+create sequence saleid;
+
+create or replace trigger updatesaleid before insert on sale
+for each row
+begin
+select saleid.nextval into :new.saleid from dual;
+end;
